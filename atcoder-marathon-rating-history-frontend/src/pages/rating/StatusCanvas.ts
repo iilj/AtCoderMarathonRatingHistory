@@ -4,7 +4,7 @@ import { getColor, getRatingPer } from '../../utils/Rating';
 import { RatingHistoryEntry } from '../../interfaces/RatingHistoryEntry';
 import { getOrdinal } from '../../utils';
 
-const LABEL_FONT_FAMILY = 'Lato';
+export const LABEL_FONT_FAMILY = 'Lato';
 export const RATING_FONT_FAMILY = 'Squada One';
 
 const OFFSET_X = 50;

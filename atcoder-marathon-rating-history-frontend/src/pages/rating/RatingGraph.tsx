@@ -4,7 +4,11 @@ import * as PIXI from 'pixi.js';
 import { TwitterIcon, TwitterShareButton } from 'react-share';
 import { RatingHistoryEntry } from '../../interfaces/RatingHistoryEntry';
 import { ChartCanvas } from './ChartCanvas';
-import { StatusCanvas, RATING_FONT_FAMILY } from './StatusCanvas';
+import {
+  StatusCanvas,
+  LABEL_FONT_FAMILY,
+  RATING_FONT_FAMILY,
+} from './StatusCanvas';
 import { getOrdinal } from '../../utils';
 import { UncontrolledTooltip } from 'reactstrap';
 
@@ -17,6 +21,7 @@ export const RatingGraph: React.FC<Props> = (props) => {
   const { paramUser, ratingHistory } = props;
   const isFontListLoaded = useFontFaceObserver([
     { family: RATING_FONT_FAMILY },
+    { family: LABEL_FONT_FAMILY },
   ]);
   const statusCanvasRef = useRef<HTMLCanvasElement | null>(null);
   const chartCanvasRef = useRef<HTMLCanvasElement | null>(null);
