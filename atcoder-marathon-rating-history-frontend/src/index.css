@@ -1,0 +1,29 @@
+body {
+  margin: 0;
+  font-family: 'Lato',"Helvetica Neue",arial,sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.navbar {
+  padding-left: 1rem;
+}
+
+a.btn-primary, a.btn-primary.active {
+  color: #fff;
+  background-color: #007bff;
+  border-color: #007bff;
+}
+a.btn-primary.focus, a.btn-primary:focus, a.btn-primary:hover {
+  color: #fff;
+  background-color: #0069d9;
+  border-color: #0062cc;
+}
+.dl-table td {
+  padding-left: 20px;
+}
