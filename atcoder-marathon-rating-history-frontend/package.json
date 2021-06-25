@@ -1,6 +1,7 @@
 {
   "name": "atcoder-marathon-rating-history-frontend",
   "version": "0.1.0",
+  "homepage": "./",
   "private": true,
   "dependencies": {
     "@pixi/filter-drop-shadow": "^4.1.3",
