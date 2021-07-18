@@ -1,6 +1,7 @@
 import * as PIXI from 'pixi.js';
 import { DropShadowFilter } from '@pixi/filter-drop-shadow';
 import { StatusCanvas } from './StatusCanvas';
+import { getPer } from '../../utils';
 import { newGraphics } from '../../utils/Shape';
 import { COLORS, STEP_SIZE, getColor } from '../../utils/Rating';
 import { RatingHistoryEntry } from '../../interfaces/RatingHistoryEntry';
@@ -33,10 +34,6 @@ const YEAR_SEC = 86400 * 365;
 
 // additional
 const LABEL_FONT_FAMILY = 'Lato';
-
-const getPer = (x: number, l: number, r: number): number => {
-  return (x - l) / (r - l);
-};
 
 export class ChartCanvas {
   app: PIXI.Application;

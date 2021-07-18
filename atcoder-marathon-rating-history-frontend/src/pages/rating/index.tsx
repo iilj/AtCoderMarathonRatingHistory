@@ -3,7 +3,6 @@ import useSWR from 'swr';
 import { Alert } from 'reactstrap';
 import { FormBlock } from './FormBlock';
 import { UserInfoTable } from './UserInfoTable';
-import { RatingGraph } from './RatingGraph';
 import { Contest } from '../../interfaces/Contest';
 import { RatingHistoryEntry } from '../../interfaces/RatingHistoryEntry';
 import {
@@ -12,6 +11,7 @@ import {
   fetchContests,
 } from '../../utils/Data';
 import { RatingRanks } from '../../utils/Rating';
+import { ChartSection } from './ChartSection';
 
 interface Props {
   match: {
@@ -124,7 +124,11 @@ export const RatingPage: React.FC<Props> = (props) => {
             ratingHistory={ratingHistory}
             ratingRanks={ratingRanks}
           />
-          <RatingGraph paramUser={paramUser} ratingHistory={ratingHistory} />
+          <ChartSection
+            paramUser={paramUser}
+            ratingHistory={ratingHistory}
+            ratingRanks={ratingRanks}
+          />
         </div>
       ) : (
         <Alert
