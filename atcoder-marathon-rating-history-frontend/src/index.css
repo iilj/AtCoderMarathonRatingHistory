@@ -27,3 +27,38 @@ a.btn-primary.focus, a.btn-primary:focus, a.btn-primary:hover {
 .dl-table td {
   padding-left: 20px;
 }
+
+.btn-group-ac-style button {
+  color: #333;
+  background-color: #fff;
+  border-color: #ccc;
+}
+
+.btn-group-ac-style button.active {
+  color: #333;
+  background-color: #e6e6e6;
+  border-color: #8c8c8c;
+
+  outline: 0;
+  background-image: none;
+  -webkit-box-shadow: inset 0 3px 5px rgba(0,0,0,0.125);
+  box-shadow: inset 0 3px 5px rgba(0,0,0,0.125);
+}
+
+.btn-group-ac-style button:focus {
+  color: #333;
+  background-color: #e6e6e6;
+  border-color: #8c8c8c;
+}
+
+.btn-group-ac-style button:hover {
+  color: #333;
+  background-color: #e6e6e6;
+  border-color: #adadad;
+}
+
+.btn-group-ac-style button.active:focus {
+  color: #333;
+  background-color: #d4d4d4;
+  border-color: #8c8c8c;
+}

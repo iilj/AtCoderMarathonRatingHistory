@@ -15,3 +15,7 @@ export const formatDate = (d: Date): string => {
   const date = `0${d.getDate()}`.slice(-2);
   return `${year}/${month}/${date}`;
 };
+
+export const getPer = (x: number, l: number, r: number): number => {
+  return (x - l) / (r - l);
+};
