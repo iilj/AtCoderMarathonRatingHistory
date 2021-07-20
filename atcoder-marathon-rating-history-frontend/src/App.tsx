@@ -11,6 +11,7 @@ import { NavigationBar } from './components/NavigationBar';
 // import logo from './logo.svg';
 import './App.css';
 import { RatingPage } from './pages/rating';
+import { RankingPage } from './pages/ranking';
 
 const App: React.FC = () => {
   return (
@@ -28,6 +29,7 @@ const App: React.FC = () => {
                 component={RatingPage as React.FC}
               />
               <Route exact path="/rating/" component={RatingPage as React.FC} />
+              <Route exact path="/ranking/" component={RankingPage} />
               <Redirect path="/" to="/rating/" />
             </Switch>
           </Container>

@@ -39,17 +39,25 @@ export const getRatingPer = (x: number): number => {
   return 0;
 };
 
+export interface RankingEntry {
+  rank: number;
+  rating: number;
+  username: string;
+  win: number;
+  match: number;
+}
+
 const MAX_RATING = 10000;
 export class RatingRanks {
   bit: BinaryIndexedTree;
-  user2rating: Map<string, number>;
+  user2rating: Map<string, RankingEntry>;
   // userid => [rating, rank][]
   user2ratingRankHistory: Map<string, [number, number][]>;
   ratings: number[];
 
   constructor(contestResultsArray?: (ContestResults | undefined)[]) {
     this.bit = new BinaryIndexedTree(MAX_RATING);
-    this.user2rating = new Map<string, number>();
+    this.user2rating = new Map<string, RankingEntry>();
     this.user2ratingRankHistory = new Map<string, [number, number][]>();
     if (contestResultsArray === undefined) {
       this.ratings = [];
@@ -60,33 +68,54 @@ export class RatingRanks {
 
       // レーティング更新の反映
       for (const username in contestResults) {
-        if (this.user2rating.has(username)) {
-          this.user2rating.set(
-            username,
-            Math.max(
-              this.user2rating.get(username) as number,
-              contestResults[username].NewRating
-            )
-          );
-          this.bit.add(contestResults[username].OldRating, -1);
+        const rankingEntry = this.user2rating.get(username);
+        if (rankingEntry !== undefined) {
+          const oldRating = rankingEntry.rating;
+          rankingEntry.rating = contestResults[username].NewRating;
+          rankingEntry.match++;
+          if (contestResults[username].Place === 1) {
+            rankingEntry.win++;
+          }
+          this.bit.add(oldRating, -1);
           this.bit.add(contestResults[username].NewRating, 1);
         } else {
-          this.user2rating.set(username, contestResults[username].NewRating);
+          this.user2rating.set(username, {
+            rank: -1,
+            rating: contestResults[username].NewRating,
+            username,
+            win: contestResults[username].Place === 1 ? 1 : 0,
+            match: 1,
+          });
           this.bit.add(contestResults[username].NewRating, 1);
         }
       }
 
       // ランキング更新
-      this.user2rating.forEach((rating: number, username: string) => {
-        const rank = this.bit.query(rating + 1, MAX_RATING) + 1;
-        if (this.user2ratingRankHistory.has(username)) {
-          this.user2ratingRankHistory.get(username)?.push([rating, rank]);
-        } else {
-          this.user2ratingRankHistory.set(username, [[rating, rank]]);
+      this.user2rating.forEach(
+        (rankingEntry: RankingEntry, username: string) => {
+          const rank = this.bit.query(rankingEntry.rating + 1, MAX_RATING) + 1;
+          rankingEntry.rank = rank;
+          if (this.user2ratingRankHistory.has(username)) {
+            this.user2ratingRankHistory
+              .get(username)
+              ?.push([rankingEntry.rating, rank]);
+          } else {
+            this.user2ratingRankHistory.set(username, [
+              [rankingEntry.rating, rank],
+            ]);
+          }
         }
-      });
+      );
     });
-    this.ratings = Array.from(this.user2rating.values());
+    // dump
+    const aaa = [] as number[];
+    for (let i = 0; i < 4000; ++i) {
+      aaa.push(this.bit.query(i, i + 1));
+    }
+    console.log(aaa);
+    this.ratings = Array.from(this.user2rating.values()).map(
+      (rankingEntry) => rankingEntry.rating
+    );
     this.ratings.sort((a, b) => b - a);
   }
 
@@ -97,7 +126,7 @@ export class RatingRanks {
   }
 
   getRating(username: string): number {
-    return this.user2rating.get(username) ?? 0;
+    return this.user2rating.get(username)?.rating ?? 0;
   }
 
   getHistogram(): [number[], number[]] {
@@ -127,5 +156,16 @@ export class RatingRanks {
       xaxis.pop();
     }
     return [xaxis, data];
+  }
+
+  /** get {rank, rating, username, win, match}[] */
+  getRanking(): RankingEntry[] {
+    const ratingAndUsername = Array.from(this.user2rating.values());
+    ratingAndUsername.sort((a, b) => {
+      if (a.rating != b.rating) return b.rating - a.rating;
+      else if (a.username < b.username) return -1;
+      else return 1;
+    });
+    return ratingAndUsername;
   }
 }

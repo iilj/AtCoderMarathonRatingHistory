@@ -19,3 +19,13 @@ export const formatDate = (d: Date): string => {
 export const getPer = (x: number, l: number, r: number): number => {
   return (x - l) / (r - l);
 };
+
+/**
+ * returns array [start, start+1, ..., end].
+ *
+ * @param {number} start start number
+ * @param {number} end end number
+ * @returns {number[]} array
+ */
+export const range = (start: number, end: number): number[] =>
+  Array.from({ length: end - start + 1 }, (v, k) => k + start);
