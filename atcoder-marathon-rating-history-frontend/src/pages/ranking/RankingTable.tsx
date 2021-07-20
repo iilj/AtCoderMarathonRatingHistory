@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import BootstrapTable, {
   ColumnDescription,
   SortOrder,
@@ -12,11 +13,13 @@ import {
   faSort,
   faSortDown,
   faSortUp,
+  faChartLine,
 } from '@fortawesome/free-solid-svg-icons';
 import { PaginationPanel } from '../../components/PaginationPanel';
 import { getColor, RankingEntry } from '../../utils/Rating';
 import { RatingCircle } from '../../components/RatingCircle';
 import './ranking-table.scss';
+import { UncontrolledTooltip } from 'reactstrap';
 
 const _sortCaret = (order: 'asc' | 'desc' | undefined): JSX.Element => {
   if (order === 'asc')
@@ -91,6 +94,7 @@ export const RankingTable: React.FC<Props> = (props) => {
       headerClasses: 'standings-username-head',
       filter: textFilter(),
       formatter: function _formatter(cell: string, _row: RankingEntry) {
+        const btnId = `ranking-user-btn-submission-${cell}`;
         return (
           <>
             <a
@@ -103,6 +107,14 @@ export const RankingTable: React.FC<Props> = (props) => {
               <RatingCircle id={cell} rating={_row.rating} />{' '}
               <span className="user">{cell}</span>
             </a>
+            <span className="ranking-user-btn">
+              <Link to={`/rating/${cell}`} id={btnId}>
+                <FontAwesomeIcon icon={faChartLine} />
+              </Link>
+              <UncontrolledTooltip placement="top" target={btnId}>
+                {`view ${cell}'s rating history`}
+              </UncontrolledTooltip>
+            </span>
           </>
         );
       },
