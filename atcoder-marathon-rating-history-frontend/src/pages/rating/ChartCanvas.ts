@@ -3,6 +3,7 @@ import { DropShadowFilter } from '@pixi/filter-drop-shadow';
 import { StatusCanvas } from './StatusCanvas';
 import { getPer } from '../../utils';
 import { newGraphics } from '../../utils/Shape';
+import { SmoothGraphics as Graphics } from '@pixi/graphics-smooth';
 import { COLORS, STEP_SIZE, getColor } from '../../utils/Rating';
 import { RatingHistoryEntry } from '../../interfaces/RatingHistoryEntry';
 
@@ -97,11 +98,11 @@ export class ChartCanvas {
   initBackground(): void {
     if (this.chartContainer === undefined) return;
 
-    const panelGraphics = new PIXI.Graphics();
+    const panelGraphics = new Graphics();
     panelGraphics.x = OFFSET_X * this.R;
     panelGraphics.y = OFFSET_Y * this.R;
     panelGraphics.alpha = 0.3;
-    const borderGraphics = new PIXI.Graphics();
+    const borderGraphics = new Graphics();
     borderGraphics.x = OFFSET_X * this.R;
     borderGraphics.y = OFFSET_Y * this.R;
 
@@ -213,7 +214,7 @@ export class ChartCanvas {
   ): void {
     if (this.chartContainer === undefined) return;
 
-    const chartGraphics = new PIXI.Graphics();
+    const chartGraphics = new Graphics();
     this.chartContainer.addChild(chartGraphics);
     // chart_container.shadow = new cj.Shadow("rgba(0,0,0,0.3)", 1, 2, 3);
     const dropShadowFilter = new DropShadowFilter();

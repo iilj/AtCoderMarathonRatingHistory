@@ -3,6 +3,7 @@ import { DropShadowFilter } from '@pixi/filter-drop-shadow';
 import { getPer } from '../../utils';
 import { newGraphics } from '../../utils/Shape';
 import { getColor } from '../../utils/Rating';
+import { SmoothGraphics as Graphics } from '@pixi/graphics-smooth';
 
 const OFFSET_X = 40;
 const OFFSET_Y = 20;
@@ -17,7 +18,7 @@ const LABEL_FONT_FAMILY = 'Lato';
 export class RatingDistributionChartCanvas {
   app: PIXI.Application;
   chartContainer?: PIXI.Container;
-  chartGraphics?: PIXI.Graphics;
+  chartGraphics?: Graphics;
   labelTextStyle!: PIXI.TextStyle;
 
   n!: number;
@@ -27,7 +28,7 @@ export class RatingDistributionChartCanvas {
 
   yMax!: number;
 
-  lineGraphics?: PIXI.Graphics;
+  lineGraphics?: Graphics;
   ratingText?: PIXI.Text;
 
   constructor(app: PIXI.Application) {
@@ -135,7 +136,7 @@ export class RatingDistributionChartCanvas {
   }
 
   newText(
-    parent: PIXI.Graphics,
+    parent: Graphics,
     x: number,
     y: number,
     font: PIXI.TextStyle

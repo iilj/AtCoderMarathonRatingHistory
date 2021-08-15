@@ -3,6 +3,7 @@ import { newGraphics, newText } from '../../utils/Shape';
 import { getColor, getRatingPer } from '../../utils/Rating';
 import { RatingHistoryEntry } from '../../interfaces/RatingHistoryEntry';
 import { getOrdinal } from '../../utils';
+import { SmoothGraphics as Graphics } from '@pixi/graphics-smooth';
 
 export const LABEL_FONT_FAMILY = 'Lato';
 export const RATING_FONT_FAMILY = 'Squada One';
@@ -120,7 +121,7 @@ class Particles {
 export class StatusCanvas {
   app: PIXI.Application;
   statusContainer?: PIXI.Container;
-  borderGraphics!: PIXI.Graphics;
+  borderGraphics!: Graphics;
   ratingText!: PIXI.Text;
   placeText!: PIXI.Text;
   diffText!: PIXI.Text;

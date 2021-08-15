@@ -1,9 +1,10 @@
 import * as PIXI from 'pixi.js';
+import { SmoothGraphics as Graphics } from '@pixi/graphics-smooth';
 
 export const newGraphics = (
   parent: PIXI.Graphics | PIXI.Container
-): PIXI.Graphics => {
-  const s = new PIXI.Graphics();
+): Graphics => {
+  const s = new Graphics();
   parent.addChild(s);
   return s;
 };
