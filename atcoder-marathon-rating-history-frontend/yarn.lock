@@ -1660,6 +1660,11 @@
   dependencies:
     "@pixi/core" "6.0.4"
 
+"@pixi/graphics-smooth@^0.0.13":
+  version "0.0.13"
+  resolved "https://registry.yarnpkg.com/@pixi/graphics-smooth/-/graphics-smooth-0.0.13.tgz#a34115b332d40f1b7714553e0de4d96aaf915ce0"
+  integrity sha512-16sNLom9LI85YYeZgUtWnYPqy5M0aQCCK92p5K55MolJaHa3iYg/KMShGOxtsgwuWyC1v2Dnjs2Pycf9bxCNZQ==
+
 "@pixi/graphics@6.0.4":
   version "6.0.4"
   resolved "https://registry.yarnpkg.com/@pixi/graphics/-/graphics-6.0.4.tgz#3d2e75acb8145a80275b194413b06fb28505c663"
