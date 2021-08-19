@@ -1,9 +1,10 @@
 import * as PIXI from 'pixi.js';
 import { newGraphics, newText } from '../../utils/Shape';
 import { getColor, getRatingPer } from '../../utils/Rating';
-import { RatingHistoryEntry } from '../../interfaces/RatingHistoryEntry';
+import { RatingHistoryEntryEx } from '../../interfaces/RatingHistoryEntry';
 import { getOrdinal } from '../../utils';
 import { SmoothGraphics as Graphics } from '@pixi/graphics-smooth';
+import { ChartCanvasMode } from './ChartCanvas';
 
 export const LABEL_FONT_FAMILY = 'Lato';
 export const RATING_FONT_FAMILY = 'Squada One';
@@ -131,10 +132,13 @@ export class StatusCanvas {
   particles?: Particles;
   standingsUrl: string;
 
-  constructor(app: PIXI.Application) {
+  mode: ChartCanvasMode;
+
+  constructor(app: PIXI.Application, mode: ChartCanvasMode) {
     this.app = app;
     this.statusContainer = undefined;
     this.standingsUrl = '';
+    this.mode = mode;
 
     this.app.ticker.maxFPS = 60;
     this.app.ticker.add(() => {
@@ -215,11 +219,12 @@ export class StatusCanvas {
     );
   }
 
-  set(data: RatingHistoryEntry, particle_flag: boolean): void {
+  set(data: RatingHistoryEntryEx, particle_flag: boolean): void {
     if (!this.particles) return;
     const date = new Date(data.EndTime * 1000);
-    const rating = data.NewRating,
-      old_rating = data.OldRating;
+    const rating = this.mode === 'Rating' ? data.NewRating : data.performance;
+    const old_rating: number | null =
+      this.mode === 'Rating' ? data.OldRating : null;
     const place = data.Place;
     const contest_name = data.ContestName;
     const tmp = getColor(rating);
@@ -232,7 +237,8 @@ export class StatusCanvas {
     this.ratingText.text = String(rating);
     this.ratingText.style.fill = color;
     this.placeText.text = getOrdinal(place);
-    this.diffText.text = getDiff(rating - old_rating);
+    this.diffText.text =
+      old_rating !== null ? getDiff(rating - old_rating) : '-';
     this.dateText.text = date.toLocaleDateString();
     this.contestNameText.text = contest_name;
     this.contestNameText.scale.x = 1.0;

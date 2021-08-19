@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import useFontFaceObserver from 'use-font-face-observer';
 import * as PIXI from 'pixi.js';
-import { RatingHistoryEntry } from '../../interfaces/RatingHistoryEntry';
-import { ChartCanvas } from './ChartCanvas';
+import { RatingHistoryEntryEx } from '../../interfaces/RatingHistoryEntry';
+import { ChartCanvas, ChartCanvasMode } from './ChartCanvas';
 import {
   StatusCanvas,
   LABEL_FONT_FAMILY,
@@ -10,12 +10,13 @@ import {
 } from './StatusCanvas';
 
 interface Props {
-  ratingHistory?: RatingHistoryEntry[];
+  ratingHistory?: RatingHistoryEntryEx[];
   paramUser: string;
+  mode: ChartCanvasMode;
 }
 
 export const RatingGraph: React.FC<Props> = (props) => {
-  const { ratingHistory } = props;
+  const { ratingHistory, mode } = props;
   const isFontListLoaded = useFontFaceObserver([
     { family: RATING_FONT_FAMILY },
     { family: LABEL_FONT_FAMILY },
@@ -46,8 +47,8 @@ export const RatingGraph: React.FC<Props> = (props) => {
     _statusApp.renderer.backgroundColor = 0xffffff;
     _chartApp.renderer.backgroundColor = 0xffffff;
 
-    const _statusCanvas = new StatusCanvas(_statusApp);
-    const _chartCanvas = new ChartCanvas(_chartApp);
+    const _statusCanvas = new StatusCanvas(_statusApp, mode);
+    const _chartCanvas = new ChartCanvas(_chartApp, mode);
 
     // _statusCanvas.init();
     setCanvases([_statusCanvas, _chartCanvas]);

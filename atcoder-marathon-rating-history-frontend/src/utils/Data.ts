@@ -1,5 +1,5 @@
 import { Contest } from '../interfaces/Contest';
-import { RatingHistoryEntry } from '../interfaces/RatingHistoryEntry';
+import { RatingHistoryEntryEx } from '../interfaces/RatingHistoryEntry';
 
 let CONTESTS: Contest[] | undefined = undefined;
 export const fetchContests = async (): Promise<Contest[]> =>
@@ -14,7 +14,7 @@ export const fetchContests = async (): Promise<Contest[]> =>
         })
     : Promise.resolve(CONTESTS);
 
-export type ContestResults = { [key: string]: RatingHistoryEntry };
+export type ContestResults = { [key: string]: RatingHistoryEntryEx };
 const CONTEST_RESULTS_MAP: Map<string, ContestResults> = new Map<
   string,
   ContestResults

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { Button, ButtonGroup, UncontrolledTooltip } from 'reactstrap';
 import { TwitterIcon, TwitterShareButton } from 'react-share';
-import { RatingHistoryEntry } from '../../interfaces/RatingHistoryEntry';
+import { RatingHistoryEntryEx } from '../../interfaces/RatingHistoryEntry';
 import { RatingRanks } from '../../utils/Rating';
 import { RatingDistributionGraph } from './RatingDistributionGraph';
 import { RatingGraph } from './RatingGraph';
@@ -10,18 +10,25 @@ import { getOrdinal } from '../../utils';
 
 interface Props {
   paramUser: string;
-  ratingHistory?: RatingHistoryEntry[];
+  ratingHistory?: RatingHistoryEntryEx[];
   ratingRanks: RatingRanks;
 }
 
 enum ChartTab {
   'rating' = 0,
-  'ratingDistribution' = 1,
+  'performance' = 1,
+  'ratingDistribution' = 2,
 }
 
 const ChartWrapper: React.FC<{
   display: boolean;
 }> = (props) => <>{props.display ? props.children : <></>}</>;
+
+const getDiffText = (x: number): string => {
+  const sign = x === 0 ? '±' : x < 0 ? '-' : '+';
+  const face = x === 0 ? ':|' : x < 0 ? ':(' : ':)';
+  return `(${sign}${Math.abs(x)}) ${face}`;
+};
 
 export const ChartSection: React.FC<Props> = (props) => {
   const { paramUser, ratingHistory, ratingRanks } = props;
@@ -36,7 +43,12 @@ export const ChartSection: React.FC<Props> = (props) => {
     const _tweetTitle =
       `${paramUser} took ${getOrdinal(rank)} place in ${
         lastHistory.ContestName
-      }!\n` + `AtCoder Marathon Rating History`;
+      }!\n` +
+      `Performance: ${lastHistory.performance}\n` +
+      `Rating: ${lastHistory.OldRating}→${lastHistory.NewRating} ${getDiffText(
+        lastHistory.NewRating - lastHistory.OldRating
+      )}\n` +
+      `AtCoder Marathon Rating History`;
     setTweetTitle(_tweetTitle);
   }, [paramUser, ratingHistory]);
 
@@ -57,6 +69,14 @@ export const ChartSection: React.FC<Props> = (props) => {
           </Button>
           <Button
             onClick={() => {
+              setActiveTab(ChartTab.performance);
+            }}
+            active={activeTab === ChartTab.performance}
+          >
+            Performance
+          </Button>
+          <Button
+            onClick={() => {
               setActiveTab(ChartTab.ratingDistribution);
             }}
             active={activeTab === ChartTab.ratingDistribution}
@@ -68,13 +88,24 @@ export const ChartSection: React.FC<Props> = (props) => {
 
       <div style={{ marginTop: '20px' }}>
         <ChartWrapper display={activeTab === ChartTab.rating}>
-          <RatingGraph paramUser={paramUser} ratingHistory={ratingHistory} />
+          <RatingGraph
+            paramUser={paramUser}
+            ratingHistory={ratingHistory}
+            mode="Rating"
+          />
+        </ChartWrapper>
+        <ChartWrapper display={activeTab === ChartTab.performance}>
+          <RatingGraph
+            paramUser={paramUser}
+            ratingHistory={ratingHistory}
+            mode="Performance"
+          />
         </ChartWrapper>
         <ChartWrapper display={activeTab === ChartTab.ratingDistribution}>
           <RatingDistributionGraph xaxis={xaxis} data={data} rating={rating} />
         </ChartWrapper>
       </div>
-      <div style={{ textAlign: 'center' }}>
+      <div style={{ textAlign: 'center', marginTop: '30px' }}>
         <TwitterShareButton
           url={window.location.href}
           title={tweetTitle}
