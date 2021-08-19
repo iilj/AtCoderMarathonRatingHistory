@@ -5,7 +5,7 @@ import { getPer } from '../../utils';
 import { newGraphics } from '../../utils/Shape';
 import { SmoothGraphics as Graphics } from '@pixi/graphics-smooth';
 import { COLORS, STEP_SIZE, getColor } from '../../utils/Rating';
-import { RatingHistoryEntry } from '../../interfaces/RatingHistoryEntry';
+import { RatingHistoryEntryEx } from '../../interfaces/RatingHistoryEntry';
 
 const MARGIN_VAL_X = 86400 * 30;
 const MARGIN_VAL_Y_LOW = 100;
@@ -36,6 +36,9 @@ const YEAR_SEC = 86400 * 365;
 // additional
 const LABEL_FONT_FAMILY = 'Lato';
 
+const MODES = ['Rating', 'Performance'] as const;
+export type ChartCanvasMode = typeof MODES[number];
+
 export class ChartCanvas {
   app: PIXI.Application;
   chartContainer?: PIXI.Container;
@@ -45,10 +48,12 @@ export class ChartCanvas {
   y_max!: number;
   labelTextStyle!: PIXI.TextStyle;
   R!: number;
+  mode: ChartCanvasMode;
 
-  constructor(app: PIXI.Application) {
+  constructor(app: PIXI.Application, mode: ChartCanvasMode) {
     this.app = app;
     this.chartContainer = undefined;
+    this.mode = mode;
     // void this.init();
   }
 
@@ -63,7 +68,15 @@ export class ChartCanvas {
     }
   }
 
-  init(ratingHistory: RatingHistoryEntry[], statusCanvas: StatusCanvas): void {
+  getRating(ratingHistoryEntry: RatingHistoryEntryEx): number {
+    if (this.mode === 'Rating') return ratingHistoryEntry.NewRating;
+    else return ratingHistoryEntry.performance;
+  }
+
+  init(
+    ratingHistory: RatingHistoryEntryEx[],
+    statusCanvas: StatusCanvas
+  ): void {
     this.destroy();
     this.chartContainer = new PIXI.Container();
     void this.app.stage.addChild(this.chartContainer);
@@ -77,8 +90,9 @@ export class ChartCanvas {
     ratingHistory.forEach((ratingHistoryEntry) => {
       this.x_min = Math.min(this.x_min, ratingHistoryEntry.EndTime);
       this.x_max = Math.max(this.x_max, ratingHistoryEntry.EndTime);
-      this.y_min = Math.min(this.y_min, ratingHistoryEntry.NewRating);
-      this.y_max = Math.max(this.y_max, ratingHistoryEntry.NewRating);
+      const rating = this.getRating(ratingHistoryEntry);
+      this.y_min = Math.min(this.y_min, rating);
+      this.y_max = Math.max(this.y_max, rating);
     });
     this.x_min -= MARGIN_VAL_X;
     this.x_max += MARGIN_VAL_X;
@@ -209,7 +223,7 @@ export class ChartCanvas {
   }
 
   initChart(
-    ratingHistory: RatingHistoryEntry[],
+    ratingHistory: RatingHistoryEntryEx[],
     statusGraphics: StatusCanvas
   ): void {
     if (this.chartContainer === undefined) return;
@@ -239,9 +253,10 @@ export class ChartCanvas {
     };
     const { argmax: highestIdx } = ratingHistory.reduce(
       ({ argmax, maxRating }, ratingHistoryEntry, index) => {
-        if (ratingHistoryEntry.NewRating > maxRating) {
+        const rating = this.getRating(ratingHistoryEntry);
+        if (rating > maxRating) {
           argmax = index;
-          maxRating = ratingHistoryEntry.NewRating;
+          maxRating = rating;
         }
         return { argmax, maxRating };
       },
@@ -252,9 +267,8 @@ export class ChartCanvas {
       const vertex = newGraphics(chartGraphics);
       vertex.lineStyle(1.0 * this.R, 0xffffff);
       if (index === highestIdx) vertex.lineStyle(1.0 * this.R, 0x000000);
-      vertex
-        .beginFill(getColor(ratingHistoryEntry.NewRating)[3])
-        .drawCircle(0, 0, 3.5 * this.R);
+      const rating = this.getRating(ratingHistoryEntry);
+      vertex.beginFill(getColor(rating)[3]).drawCircle(0, 0, 3.5 * this.R);
       vertex.x =
         (OFFSET_X +
           PANEL_WIDTH *
@@ -263,8 +277,7 @@ export class ChartCanvas {
       vertex.y =
         (OFFSET_Y +
           (PANEL_HEIGHT -
-            PANEL_HEIGHT *
-              getPer(ratingHistoryEntry.NewRating, this.y_min, this.y_max))) *
+            PANEL_HEIGHT * getPer(rating, this.y_min, this.y_max))) *
         this.R;
       vertex.interactive = true;
       vertex.on('mouseover', () => {
@@ -296,7 +309,7 @@ export class ChartCanvas {
           2 * this.R
         );
       const highest_text = new PIXI.Text(
-        `Highest: ${ratingHistory[highestIdx].NewRating}`,
+        `Highest: ${this.getRating(ratingHistory[highestIdx])}`,
         this.labelTextStyle
       );
       highest_text.x = x;

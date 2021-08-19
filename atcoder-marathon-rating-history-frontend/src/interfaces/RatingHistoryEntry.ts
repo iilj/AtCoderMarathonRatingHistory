@@ -9,3 +9,7 @@ export interface RatingHistoryEntry {
   low: number;
   high: number;
 }
+export interface RatingHistoryEntryEx extends RatingHistoryEntry {
+  performance: number;
+  change: number;
+}

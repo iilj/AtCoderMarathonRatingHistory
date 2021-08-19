@@ -4,7 +4,7 @@ import { Alert } from 'reactstrap';
 import { FormBlock } from './FormBlock';
 import { UserInfoTable } from './UserInfoTable';
 import { Contest } from '../../interfaces/Contest';
-import { RatingHistoryEntry } from '../../interfaces/RatingHistoryEntry';
+import { RatingHistoryEntryEx } from '../../interfaces/RatingHistoryEntry';
 import {
   ContestResults,
   fetchContestResults,
@@ -49,7 +49,7 @@ export const RatingPage: React.FC<Props> = (props) => {
           })
           .filter(
             (contestResult) => contestResult !== undefined
-          ) as RatingHistoryEntry[])
+          ) as RatingHistoryEntryEx[])
       : undefined;
   const ratingRanks = new RatingRanks(contestResultsArray);
 
