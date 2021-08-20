@@ -1,3 +1,7 @@
+const pad = (n: number): string => {
+  return `0${n}`.slice(-2);
+};
+
 /**
  * 順位の数値から順位文字列に変換する
  * @param x 順位
@@ -11,9 +15,22 @@ export const getOrdinal = (x: number): string => {
 
 export const formatDate = (d: Date): string => {
   const year = String(d.getFullYear());
-  const month = `0${d.getMonth() + 1}`.slice(-2);
-  const date = `0${d.getDate()}`.slice(-2);
+  const month = pad(d.getMonth() + 1);
+  const date = pad(d.getDate());
   return `${year}/${month}/${date}`;
+};
+
+const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] as const;
+
+// 2021-08-14(Sat) 22:40
+export const formatDatetime = (d: Date): string => {
+  const year = String(d.getFullYear());
+  const month = pad(d.getMonth() + 1);
+  const date = pad(d.getDate());
+  const day = DAYS[d.getDay()];
+  const hours = pad(d.getHours());
+  const minutes = pad(d.getMinutes());
+  return `${year}-${month}-${date}(${day}) ${hours}:${minutes}`;
 };
 
 export const getPer = (x: number, l: number, r: number): number => {
@@ -29,3 +46,13 @@ export const getPer = (x: number, l: number, r: number): number => {
  */
 export const range = (start: number, end: number): number[] =>
   Array.from({ length: end - start + 1 }, (v, k) => k + start);
+
+/**
+ * 増減値を文字列に変換する
+ * @param x 増減値
+ * @returns 増減値を表す文字列
+ */
+export const getDiff = (x: number): string => {
+  const sign = x === 0 ? '±' : x < 0 ? '-' : '+';
+  return `${sign}${Math.abs(x)}`;
+};

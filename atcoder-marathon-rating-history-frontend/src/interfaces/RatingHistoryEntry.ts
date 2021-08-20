@@ -1,15 +1,19 @@
 export interface RatingHistoryEntry {
-  EndTime: number;
-  NewRating: number;
-  OldRating: number;
-  Place: number;
-  ContestName: string;
-  StandingsUrl: string;
-  StandingsU: string;
-  low: number;
-  high: number;
+  readonly EndTime: number;
+  readonly NewRating: number;
+  readonly OldRating: number;
+  readonly Place: number;
+  readonly ContestName: string;
+  /** "https://atcoder.jp/contests/ahc001/standings?watching=hakomo" など */
+  readonly StandingsUrl: string;
+  /** "/contests/ahc001/standings?watching=hakomo" など */
+  readonly StandingsU: string;
+  readonly low: number;
+  readonly high: number;
 }
 export interface RatingHistoryEntryEx extends RatingHistoryEntry {
-  performance: number;
-  change: number;
+  readonly performance: number;
+  readonly change: number;
+  /** コンテストの slug */
+  readonly slug: string;
 }

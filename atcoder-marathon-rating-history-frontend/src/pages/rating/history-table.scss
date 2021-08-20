@@ -1,0 +1,29 @@
+.react-bootstrap-table table.table-standings {
+    thead tr {
+        border-bottom-width: 3px;
+        th {
+            cursor: pointer;
+        }
+    }
+    tbody {
+        td {
+            &.history-table-contest {
+                text-align: left;
+                .history-user-btn {
+                    margin-left: 0.2rem;
+                    a {
+                        color: black;
+                    }
+                }
+            }
+            a {
+                color: #337ab7;
+                text-decoration: none;
+                &:hover, &:focus {
+                    color: #23527c;
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+}
