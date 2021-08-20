@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import useSWR from 'swr';
-import { Alert } from 'reactstrap';
+import { Alert, Nav, NavItem } from 'reactstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser, faList } from '@fortawesome/free-solid-svg-icons';
 import { FormBlock } from './FormBlock';
 import { UserInfoTable } from './UserInfoTable';
 import { Contest } from '../../interfaces/Contest';
@@ -12,6 +14,22 @@ import {
 } from '../../utils/Data';
 import { RatingRanks } from '../../utils/Rating';
 import { ChartSection } from './ChartSection';
+import './nav.scss';
+import { HistoryTable } from './HistoryTable';
+
+enum ContentTab {
+  'chart' = 0,
+  'table' = 1,
+}
+
+const ContentWrapper: React.FC<{
+  display: boolean;
+}> = (props) => <>{props.display ? props.children : <></>}</>;
+
+const getNavClassName = (active: boolean): string => {
+  if (active) return 'active nav-link';
+  return 'nav-link';
+};
 
 interface Props {
   match: {
@@ -23,6 +41,7 @@ interface Props {
 
 export const RatingPage: React.FC<Props> = (props) => {
   const paramUser: string = props.match.params.user ?? '';
+  const [activeTab, setActiveTab] = useState<ContentTab>(ContentTab.chart);
 
   const { data: contests, error: contestsError } = useSWR<Contest[], Error>(
     '/json/contests/contests',
@@ -116,20 +135,60 @@ export const RatingPage: React.FC<Props> = (props) => {
       <FormBlock paramUser={paramUser} />
       <hr />
       {ratingHistory?.length ? (
-        <div
-          style={{ maxWidth: '640px', marginLeft: 'auto', marginRight: 'auto' }}
-        >
-          <UserInfoTable
-            paramUser={paramUser}
-            ratingHistory={ratingHistory}
-            ratingRanks={ratingRanks}
-          />
-          <ChartSection
-            paramUser={paramUser}
-            ratingHistory={ratingHistory}
-            ratingRanks={ratingRanks}
-          />
-        </div>
+        <>
+          <Nav tabs className="justify-content-center">
+            <NavItem>
+              <a
+                className={getNavClassName(activeTab === ContentTab.chart)}
+                onClick={() => {
+                  setActiveTab(ContentTab.chart);
+                }}
+              >
+                <FontAwesomeIcon style={{ marginRight: '4px' }} icon={faUser} />
+                Profile
+              </a>
+            </NavItem>
+            <NavItem>
+              <a
+                className={getNavClassName(activeTab === ContentTab.table)}
+                onClick={() => {
+                  setActiveTab(ContentTab.table);
+                }}
+              >
+                <FontAwesomeIcon style={{ marginRight: '4px' }} icon={faList} />
+                Competition History
+              </a>
+            </NavItem>
+          </Nav>
+          <ContentWrapper display={activeTab === ContentTab.chart}>
+            <div
+              style={{
+                maxWidth: '640px',
+                marginLeft: 'auto',
+                marginRight: 'auto',
+              }}
+            >
+              <UserInfoTable
+                paramUser={paramUser}
+                ratingHistory={ratingHistory}
+                ratingRanks={ratingRanks}
+              />
+              <ChartSection
+                paramUser={paramUser}
+                ratingHistory={ratingHistory}
+                ratingRanks={ratingRanks}
+              />
+            </div>
+          </ContentWrapper>
+          <ContentWrapper display={activeTab === ContentTab.table}>
+            <div className="container">
+              <HistoryTable
+                paramUser={paramUser}
+                ratingHistory={ratingHistory}
+              />
+            </div>
+          </ContentWrapper>
+        </>
       ) : (
         <Alert
           color="danger"

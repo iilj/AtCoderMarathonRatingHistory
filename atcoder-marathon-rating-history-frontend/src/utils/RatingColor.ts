@@ -71,3 +71,27 @@ export const getRatingColorClass = (rating: number): RatingColorClassName => {
       return 'difficulty-red';
   }
 };
+
+export const getRatingColorBG = (rating: number): string => {
+  const ratingColor = getRatingColor(rating);
+  switch (ratingColor) {
+    case 'Black':
+      return '#D9D9D9';
+    case 'Grey':
+      return '#D9D9D9';
+    case 'Brown':
+      return '#D9C5B2';
+    case 'Green':
+      return '#B2D9B2';
+    case 'Cyan':
+      return '#B2ECEC';
+    case 'Blue':
+      return '#B2B2FF';
+    case 'Yellow':
+      return '#ECECB2';
+    case 'Orange':
+      return '#FFD9B2';
+    case 'Red':
+      return '#FFB2B2';
+  }
+};

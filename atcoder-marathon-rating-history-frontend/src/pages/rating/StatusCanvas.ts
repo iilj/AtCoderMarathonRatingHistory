@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js';
 import { newGraphics, newText } from '../../utils/Shape';
 import { getColor, getRatingPer } from '../../utils/Rating';
 import { RatingHistoryEntryEx } from '../../interfaces/RatingHistoryEntry';
-import { getOrdinal } from '../../utils';
+import { getDiff, getOrdinal } from '../../utils';
 import { SmoothGraphics as Graphics } from '@pixi/graphics-smooth';
 import { ChartCanvasMode } from './ChartCanvas';
 
@@ -18,16 +18,6 @@ const STAR_MIN = 3200;
 const PARTICLE_MIN = 3;
 const PARTICLE_MAX = 20;
 const LIFE_MAX = 30;
-
-/**
- * 増減値を文字列に変換する
- * @param x 増減値
- * @returns 増減値を表す文字列
- */
-const getDiff = (x: number): string => {
-  const sign = x === 0 ? '±' : x < 0 ? '-' : '+';
-  return `${sign}${Math.abs(x)}`;
-};
 
 class Particle {
   object: PIXI.Text;

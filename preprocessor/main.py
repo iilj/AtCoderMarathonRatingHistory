@@ -33,7 +33,8 @@ def crawl() -> None:
                 'low': 0,
                 'high': 10000,
                 'performance': entry.performance,
-                'change': entry.change
+                'change': entry.change,
+                'slug': contest.contest_slug
             } for name, entry in csv.entries.items()}
             with open(f'../atcoder-marathon-rating-history-frontend/public/json/results/{contest.contest_slug}.json',
                       mode='wt', encoding='utf-8') as f:

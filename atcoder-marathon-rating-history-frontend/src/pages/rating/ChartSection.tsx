@@ -6,7 +6,7 @@ import { RatingHistoryEntryEx } from '../../interfaces/RatingHistoryEntry';
 import { RatingRanks } from '../../utils/Rating';
 import { RatingDistributionGraph } from './RatingDistributionGraph';
 import { RatingGraph } from './RatingGraph';
-import { getOrdinal } from '../../utils';
+import { getDiff, getOrdinal } from '../../utils';
 
 interface Props {
   paramUser: string;
@@ -25,9 +25,8 @@ const ChartWrapper: React.FC<{
 }> = (props) => <>{props.display ? props.children : <></>}</>;
 
 const getDiffText = (x: number): string => {
-  const sign = x === 0 ? '±' : x < 0 ? '-' : '+';
   const face = x === 0 ? ':|' : x < 0 ? ':(' : ':)';
-  return `(${sign}${Math.abs(x)}) ${face}`;
+  return `(${getDiff(x)}) ${face}`;
 };
 
 export const ChartSection: React.FC<Props> = (props) => {
