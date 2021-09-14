@@ -56,3 +56,13 @@ export const getDiff = (x: number): string => {
   const sign = x === 0 ? '±' : x < 0 ? '-' : '+';
   return `${sign}${Math.abs(x)}`;
 };
+
+export const getHashtagSet = (slug: string): string[] => {
+  const hashtags = ['#AtCoder'];
+  if (slug.startsWith('ahc')) {
+    hashtags.push(`#${slug.toUpperCase()}`);
+  } else if (slug === 'rcl-contest-2021-long') {
+    hashtags.push('#R_procon');
+  }
+  return hashtags;
+};

@@ -6,7 +6,7 @@ import { RatingHistoryEntryEx } from '../../interfaces/RatingHistoryEntry';
 import { RatingRanks } from '../../utils/Rating';
 import { RatingDistributionGraph } from './RatingDistributionGraph';
 import { RatingGraph } from './RatingGraph';
-import { getDiff, getOrdinal } from '../../utils';
+import { getDiff, getHashtagSet, getOrdinal } from '../../utils';
 
 interface Props {
   paramUser: string;
@@ -47,7 +47,11 @@ export const ChartSection: React.FC<Props> = (props) => {
       `Rating: ${lastHistory.OldRating}→${lastHistory.NewRating} ${getDiffText(
         lastHistory.NewRating - lastHistory.OldRating
       )}\n` +
-      `AtCoder Marathon Rating History`;
+      (lastHistory.NewRating > lastHistory.OldRating
+        ? 'Updated highest rating!\n'
+        : '') +
+      `${getHashtagSet(lastHistory.slug).join(' ')}\n\n` +
+      `AtCoder Marathon Rating History\n`;
     setTweetTitle(_tweetTitle);
   }, [paramUser, ratingHistory]);
 
