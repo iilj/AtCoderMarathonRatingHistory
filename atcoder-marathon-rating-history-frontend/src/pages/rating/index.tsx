@@ -52,6 +52,7 @@ export const RatingPage: React.FC<Props> = (props) => {
     Error
   >(contests ? `/json/results/` : null, () => {
     if (!contests) return Promise.resolve([undefined]);
+    console.log(contests);
     const promises = contests.map((contest) =>
       fetchContestResults(contest.slug)
     );

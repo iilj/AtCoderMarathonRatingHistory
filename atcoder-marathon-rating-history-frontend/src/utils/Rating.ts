@@ -107,12 +107,6 @@ export class RatingRanks {
         }
       );
     });
-    // dump
-    const aaa = [] as number[];
-    for (let i = 0; i < 4000; ++i) {
-      aaa.push(this.bit.query(i, i + 1));
-    }
-    console.log(aaa);
     this.ratings = Array.from(this.user2rating.values()).map(
       (rankingEntry) => rankingEntry.rating
     );

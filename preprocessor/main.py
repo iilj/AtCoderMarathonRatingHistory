@@ -8,7 +8,7 @@ from AHCResultCSV import AHCScoresCSV
 
 
 def crawl() -> None:
-    pattern: Pattern[str] = re.compile(r'^ahc\d\d\d$')
+    pattern: Pattern[str] = re.compile(r'^(ahc\d\d\d|rcl-contest-2021-long)$')
     clprr: ContestListPageRequestResult = ContestListPageRequestResult.create_from_request()
     contests: List[Dict[str, Union[int, str]]] = []
     for contest in clprr.contest_list_page.contests:

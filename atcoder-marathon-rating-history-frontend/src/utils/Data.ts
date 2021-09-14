@@ -22,7 +22,7 @@ const CONTEST_RESULTS_MAP: Map<string, ContestResults> = new Map<
 export const fetchContestResults = async (
   contest?: string
 ): Promise<ContestResults | undefined> =>
-  contest !== undefined && contest.length > 0 && contest.startsWith('ahc')
+  contest !== undefined && contest.length > 0
     ? !CONTEST_RESULTS_MAP.has(contest)
       ? fetch(`${process.env.PUBLIC_URL}/json/results/${contest}.json`)
           .catch((e) => {
