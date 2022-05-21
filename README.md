@@ -1,9 +1,18 @@
 AtCoder Marathon Rating History
 =====
 
+## DEPRECATED
+
+AtCoder が公式に Heuristic コンテストのランキング・グラフ表示に対応したため，そちらを用いてください．
+
+- [ランキング \- AtCoder](https://atcoder.jp/ranking?contestType=heuristic)
+
+AtCoder Marathon Rating History は，今後更新されません．
+
+
 ## 公開先
 
-TODO
+[AtCoder Marathon Rating History](https://iilj.github.io/AtCoderMarathonRatingHistory/#/rating/)
 
 
 ## 概要
