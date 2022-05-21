@@ -74,6 +74,19 @@ export const RatingPage: React.FC<Props> = (props) => {
 
   return (
     <>
+      <h2>!!! DEPRECATED !!!</h2>
+      <p>
+        AtCoder が公式に Heuristic
+        コンテストのランキング・グラフ表示に対応したため，そちらを用いてください．
+      </p>
+      <p>
+        <a href="https://atcoder.jp/ranking?contestType=heuristic">
+          ランキング - AtCoder
+        </a>
+      </p>
+      <p>AtCoder Marathon Rating History は，今後更新されません．</p>
+      <hr />
+
       <h2>Description</h2>
       <p>
         AtCoder
